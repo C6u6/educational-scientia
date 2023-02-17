@@ -103,9 +103,9 @@ export function Sidebar() {
                 }
             </div>
             {
-                UserIsAuthenticated ? <UserBox toggle={toggle} logoutIcon={logoutIcon}/> : <div className="w-fit m-auto  p-5">
+                UserIsAuthenticated ? <UserBox toggle={toggle} logoutIcon={logoutIcon}/> : <div className="max-w-fit m-auto p-5">
                 <Link to="login"
-                 className="text-xl text-white"
+                 className="text-xl text-white truncate"
                 >
                     Login
                 </Link>

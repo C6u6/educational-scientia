@@ -1,16 +1,23 @@
-import { useState } from 'react';
 import ortogonalPlan from '../assets/dashboard/ortogonal-plan.svg';
-import secondImg from '../assets/dashboard/ball-0.svg';
+import { Icons } from '../components/Icons';
+import { PopoverForOrtonalGraph } from './PopoverForOrtonalGraph';
 
-export function OverallPerformance() {
-    const [pointImg, setPointImg] = useState([]);
+export function OverallPerformance({generalCorrectnessForADay = [100, 90, 20, 10, 40, 12, 67]}) {
+    const percentageFromLeft = [12, 25.5, 39, 52.7, 66, 79.5, 93];
+    const percentageFromBottom: number[] = [];
 
-    function randomNumber() {
+    generalCorrectnessForADay.forEach(el => {
+        const establishingEquivalanceForComponent = (el * 74) / 100;
+        percentageFromBottom.push(establishingEquivalanceForComponent);
+    });
+
+    function randomPointImgNumber() {
         let pointImgNumber;
+        const randomNumber = Math.random();
 
-        if (Math.random() < 0.33) {
+        if (randomNumber < 0.33) {
             pointImgNumber = 0;
-        } else if (Math.random() > 0.33 && Math.random() < 0.66) {
+        } else if (randomNumber > 0.33 && randomNumber < 0.66) {
             pointImgNumber = 1;
         } else {
             pointImgNumber = 2;
@@ -18,25 +25,24 @@ export function OverallPerformance() {
         return pointImgNumber;
     };
 
-    function generatePositionIcons() {
-        let imgs = []
-        let i = 0;
-        while (i < 6) {
-            import(`../assets/dashboard/ball-${randomNumber}.svg`).then( img => imgs.push(img));
-            i++;
-        };
-
-        setPointImg(imgs);
-    };
-
-    generatePositionIcons();
-
     return (
-        <div className="bg-transparent w-fit h-fit p-2 ">
+        <div className="bg-transparent w-fit h-fit p-2 relative">
             <div className='bg-white rounded-lg w-fit h-fit relative'>
                 <img src={ortogonalPlan} alt="Image representaing an ortogonal plan"
-                 className=''
+                 className='relative'
                 />
+                {/* {
+                    Array.from({length: 7}).map((_, i) => {
+                        return (
+                            <Icons key={`${i}th ball`}
+                             directory='dashboard' imageName={`ball-${randomPointImgNumber()}`} withoutLabel={true} label='' width={16} height={16}
+                             ClassNameForDiv={`absolute z-10 left-[${percentageFromLeft[i]}%] bottom-[${percentageFromBottom[i]}%]`}
+                            />
+                        )
+                    })
+                } */}
+
+                <PopoverForOrtonalGraph />
             </div>
         </div>
     );

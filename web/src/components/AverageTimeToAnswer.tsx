@@ -1,30 +1,43 @@
+import { useState } from "react";
+import { selectOptionsAndValues } from "../utils/average.time.to.answer.select.options";
+
 export function AverageTimeToAnswer() {
-    console.log('hours in last 7 days is working')
+
+    const [period, setPeriod] = useState<string>(''); // request the time the user speant to answer any question whitin this period
+
+    // Needs to contact an endpoint, obtain all info related to time spent in each question whitin
+    // the select period
+
+    let time;
+
+    function handleChange(period: string) {
+        setPeriod(() => {
+            return period;
+        });
+    };
 
     return (
-        <div className="bg-white rounded-lg w-[20%] flex flex-col justify-between">
+        <div className="bg-white rounded-lg w-[20%] h-fit flex flex-col justify-between">
             <p className="mx-auto"> Tempo Médio</p>
-            <div className="bg-LightBlue-400 rounded-[50%] text-white my-14 mx-4 flex justify-center">
+            <div className="bg-LightBlue-400 rounded-[50%] text-white m-auto my-5 flex justify-center">
                 <select name="AverageTime" id="AverageTime"
-                 className={`bg-transparent py-4 px-1`}
+                 className={`bg-transparent py-4 px-2`}
+                 onChange={(e) => handleChange(e.target.value)}
                 >
-                    <option value="">Tempo Médio</option>
-                    <option value="today">Hoje</option>
-                    <option value="thisWeek">Nesta Semana</option>
-                    <option value="thisMonth">Neste Mês</option>
-                    <option value="thisYear">Neste Ano</option>
-                    <option value="thisTwoMonths">Neste Bimestre</option>
-                    <option value="thisThreeMonths">Neste Trimestre</option>
-                    <option value="thisSixMonths">Neste Semestre</option>
-                    <option value="lastThree">Últimos 3 dias </option>
-                    <option value="lastSeven">Últimos 7 dias</option>
-                    <option value="lastThirty">Últimos 30 dias</option>
-                    <option value="lastSixty">Últimos 60 dias</option>
-                    <option value="lastNinety">Últimos 90 dias</option>
-                    <option value="lastOneHundredEightyTwo">Últimos 182 dias</option>
-                    <option value="lastThreeHundredSixtyFive">Últimos 365 dias</option>
+                    {
+                        selectOptionsAndValues.map((el, i) => {
+                            return (
+                                <option key={`option-for-period-${el.label}`} value={el.value}>{el.label}</option> 
+                            )
+                        })
+                    }
                 </select>
             </div>
+
+            {
+                time != undefined ? <div className="mx-auto mb-5"><p>{time} segundos</p></div> : null
+            }
+            
         </div>
     )
 };

@@ -13,12 +13,21 @@ module.exports = {
         LightBlue: {
           400: '#4594DD',
           500: '#256ABB',
+          15: '#4594DD',
+          30: '#4594DD',
+          40: '#',
+          65: '#',
+          85: '#',
+          100: '#',
           
         },
         DarkBlue: {
           400: '#094A7B',
           500: '#032742'
         },
+      },
+      gridTemplateRows: {
+        7: 'repeat(7, minmax(0, 1fr))',
       }
     },
   },
