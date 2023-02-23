@@ -1,37 +1,25 @@
 import { useRef, useState } from "react";
 import { DocumentTitle } from "../components/DocumentTitle";
 import { PopoverCard } from "../components/PopoverCard";
+import { validInputsType } from "./QuestionSheet";
 
-export interface Question {
-    year: number,
-    title: string,
-    institute: string,
-    alternatives: string,
-};
-
-interface Questions {
-    questions: Question[],
-
-}
-
-type Props = {
-    questions: [{
+export type Props = {
+    questions: Array<{
         year: number,
         title: string,
-        institute: string,
-        alternatives: string,
-    }],
-    attributesToBePassedToPopoverCard: {
-        year: number,
-        title: string,
-        institute: string,
-        alternatives: string,}
+        topic: string,
+        subject: string,
+        imagePath?: string,
+        institution: string,
+        alternatives: string[],
+    }>,
+    attributesToBePassedToPopoverCard: validInputsType
 };
 
-export function QuestionSheetApplied(/* { dataToFiltrateQuestions: Question} */) {
+export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questions}: Props) {
     // Acess the endpoint in the server which will give the questions then call the QuestionSheetApplied
 
-    const questions = [
+    /* const exampleQuestions = [
         {
             title: 'Esse é o título da primera questão',
             institute: 'INstituto',
@@ -68,7 +56,7 @@ export function QuestionSheetApplied(/* { dataToFiltrateQuestions: Question} */)
                 'Essa é a quinta alternativa da terceira questão',
             ]
         },
-    ];
+    ]; */
 
     const answers = useRef<Array<string>>([]);
     const [questionBeenApplied, setQuestionBeenApplied] = useState(0);
@@ -96,7 +84,7 @@ export function QuestionSheetApplied(/* { dataToFiltrateQuestions: Question} */)
                     <h3
                     className="p-5 w-fit mx-auto"
                     >
-                        ({`${questions[questionBeenApplied].institute} - ${questions[questionBeenApplied].year}`}) {questions[questionBeenApplied].title}
+                        ({`${questions[questionBeenApplied].institution} - ${questions[questionBeenApplied].year}`}) {questions[questionBeenApplied].title}
                     </h3>
                     <div
                     className="p-5 w-fit mx-auto"
@@ -142,7 +130,9 @@ export function QuestionSheetApplied(/* { dataToFiltrateQuestions: Question} */)
                 </div> : null
             }
             {
-                answers.current.length == questions.length ? <PopoverCard title="Parabéns" shortPharagraph="You finished n questions" /* dataToFiltrateQuestions={dataToFiltrateQuestions} */ /> : null
+                answers.current.length == questions.length ? 
+                <PopoverCard title="Parabéns" shortPharagraph="You finished n questions" dataToGenerateAnotherQuestionSet={attributesToBePassedToPopoverCard}/>
+                : null
             }
         </div>
     );

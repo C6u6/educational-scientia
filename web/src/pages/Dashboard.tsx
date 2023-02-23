@@ -20,7 +20,7 @@ export function Dashboard() {
                     <Icons imageName="bell" directory="dashboard" label="" width={20} height={20} withoutLabel={true} ClassNameForDiv="hover:cursor-pointer" />
                 </div>
 
-                <div className="flex flex-wrap gap-10 m-5">
+                <div className="flex flex-wrap gap-5 m-5">
                     <HoursInLast7Days />
                     <AverageTimeToAnswer />
                 </div>

@@ -32,7 +32,7 @@ export function PopoverForOrtonalGraph(props: any) {
             {
                 Array.from({length: 7}).map((_, i) => {
                     return (
-                        <Popover.Root>
+                        <Popover.Root key={i}>
                             <Popover.Trigger>
                                 <Icons key={`${i}th ball`}
                                 directory='dashboard' imageName={`ball-${randomPointImgNumber()}`} withoutLabel={true} label='' width={16} height={16}

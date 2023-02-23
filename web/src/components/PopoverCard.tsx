@@ -1,23 +1,52 @@
 import { useState } from "react";
-import { Question, QuestionSheetApplied } from "../pages/QuestionSheetApplied";
+import { validInputsType } from "../pages/QuestionSheet";
+import { QuestionSheetApplied } from "../pages/QuestionSheetApplied";
 import { AnalysingAQuestionSet } from "./AnalysingAQuestionSet";
 import { BackButton } from "./BackButton";
 
-interface Props {
+type PopoverProps = {
     title: string,
     shortPharagraph: string,
-    dataToGenerateAnotherQuestionSet?: Question
+    dataToGenerateAnotherQuestionSet: validInputsType,
 };
 
-export function PopoverCard({title, shortPharagraph, dataToGenerateAnotherQuestionSet}:Props) {
+export function PopoverCard({title, shortPharagraph, dataToGenerateAnotherQuestionSet}: PopoverProps) {
 
     const [buttonClicked, setButtonClicked] = useState('');
+    const [newQuestionSet, setNewQuestionSet] = useState<Array< {
+        year: number,
+        title: string,
+        topic: string,
+        subject: string,
+        imagePath?: string,
+        institution: string,
+        alternatives: string[],
+    }>>([]);
 
     function handleClickRepeat() {
         setButtonClicked(() => {
             return 'repeat';
+        });
+
+        // Fetch questions 
+        let query = '?';
+
+        /* dataToFiltrateQuestions.map(el => {
+            query += `${fields[el.fieldIndex].charAt(0).toLowerCase() + fields[el.fieldIndex].slice(1)}=${el.input}&`;
         })
-    };
+
+        api.get(`question-library?${query}`).then(response => {
+            
+            setQuestions(() => {return []});
+            
+            response.data.map((el: { props: { year: number; title: string; topic: string; subject: string; imagePath?: string | undefined; institution: string; alternatives: string[]; }; })  => {
+                setQuestions((prevArray) => {
+                    return [...prevArray, el.props]
+                });
+            })
+        })
+    }; */
+    }; 
 
     function handleClickAnalyse() {
         setButtonClicked(() => {
@@ -32,7 +61,9 @@ export function PopoverCard({title, shortPharagraph, dataToGenerateAnotherQuesti
             }
 
             {
-                buttonClicked == "repeat" ? <QuestionSheetApplied /* dataToFiltrateQuestions={dataToGenerateAnotherQuestionSet} *//> : null
+                buttonClicked == "repeat" ?
+                <QuestionSheetApplied attributesToBePassedToPopoverCard={dataToGenerateAnotherQuestionSet} questions={newQuestionSet}/>
+                : null
             }
 
             {
