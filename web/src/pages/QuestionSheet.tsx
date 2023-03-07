@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { BackButton } from "../components/BackButton";
 import { DocumentTitle } from "../components/DocumentTitle";
+import { ShowExplanations } from "../components/ShowExplanations";
 import { api } from "../lib/axios";
 import { QuestionSheetApplied } from "../pages/QuestionSheetApplied";
 
@@ -8,6 +9,35 @@ export type validInputsType = Array<{
     input: string,
     fieldIndex: number
 }>
+
+type APIQuestionRequest = { 
+    _id: string;
+    props: {
+        year: number;
+        title: string;
+        topic: string;
+        subject: string;
+        imagePath?: string | undefined;
+        institution: string;
+    };
+    alternatives: {
+        alternative1: string;
+        alternative2: string;
+        alternative3: string;
+        alternative4: string;
+        alternative5: string;
+    };
+};
+
+type Question = {
+    year: number,
+    title: string,
+    topic: string,
+    subject: string,
+    imagePath?: string,
+    institution: string,
+    alternatives: string[],
+};
 
 export function QuestionSheet() {
 
@@ -31,6 +61,8 @@ export function QuestionSheet() {
         institution: string,
         alternatives: string[],
     }>>([]);
+
+    const [mustShowExplanation, setMustShowExplanation] = useState(false);
 
     useEffect(() => {
         inputs.forEach(el => {
@@ -84,6 +116,12 @@ export function QuestionSheet() {
         })
     };
 
+    function handleInfoClick() {
+        setMustShowExplanation(() => {
+            return true;
+        }) 
+    };
+
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         
@@ -94,24 +132,35 @@ export function QuestionSheet() {
         // Fetch request
         let query = '';
 
-        dataToFiltrateQuestions.map(el => {
-            query += `${fields[el.fieldIndex].charAt(0).toLowerCase() + fields[el.fieldIndex].slice(1)}=${el.input}&`;
-        })
+        dataToFiltrateQuestions.forEach(el => {
+            query += `${queryKeys[el.fieldIndex]}=${el.input}&`;
+        });
 
-        api.get(`question-library?${query}`).then(response => {
+        /* api.get(`question-library?${query}`).then(response => {
+
+            console.log(response.data.alternatives);
             
             setQuestions(() => {return []});
+
+            let temp: Question;
             
-            response.data.map((el: { props: { year: number; title: string; topic: string; subject: string; imagePath?: string | undefined; institution: string; alternatives: string[]; }; })  => {
+            response.data.map(async (el: APIQuestionRequest)  => {
+                // Alternatives are a promise
+                let a = await el.alternatives;
+                temp = {
+                    ...el.props,
+                    alternatives: Object.values(el.alternatives),
+                };
                 setQuestions((prevArray) => {
-                    return [...prevArray, el.props];
+                    return [...prevArray, temp];
                 });
             });
         });
-        console.log(question);
+        console.log(question); */
     };
 
-    const fields = ['Instituição', 'Ano', 'Matéria', 'Tópico', 'Tempo'];
+    const fields = ['Instituição', 'Ano', 'Matéria', 'Tópico', 'Tempo', 'Quantidade'];
+    const queryKeys = ['institution', 'year', 'subject', 'topic', 'time', 'quantity'];
 
     return (
         <>
@@ -121,7 +170,7 @@ export function QuestionSheet() {
                     <DocumentTitle title="Filtragem de questão" />
                     <form 
                         onSubmit={(e) => handleSubmit(e)}
-                        className={`flex flex-col bg-Gray w-fit mx-auto p-6 rounded-lg mt-3`}
+                        className={`flex flex-col bg-Gray w-fit mx-auto p-6 rounded-lg mt-3 relative`}
                     >
                         <h1 className="text-DarkBlue-500 font-semibold text-5xl mt-5 mx-auto">Escolha critérios filtrativos</h1>
                         <h4 className="text-DarkBlue-500  text-sm my-3 mx-auto">Preencha os campos com critérios de interesse</h4>
@@ -145,7 +194,7 @@ export function QuestionSheet() {
                                                 </section>
 
                                                 <input key={`input-for-${field}-at-index-${index}`}
-                                                    type={field == 'Ano' || field == 'Tempo' ? 'number' : 'text'} name={field} id={field} 
+                                                    type={field == 'Ano' || field == 'Tempo' || field == 'Quantidade' ? 'number' : 'text'} name={field} id={field} 
                                                     placeholder={`Preencha com ${field.charAt(0).toLowerCase() + field.slice(1)} de interesse`}
                                                     
                                                     className={`rounded-lg bg-Gray border-[0.5px] 
@@ -170,9 +219,15 @@ export function QuestionSheet() {
                             >
                                 Buscar Questões
                             </button>
-                            <button className="bg-LightBlue-500 text-white font-semibold text-xl w-7 h-7 rounded-[50%] my-auto">
+                            <button
+                             className="bg-LightBlue-500 text-white font-semibold text-xl w-7 h-7 rounded-[50%] my-auto"
+                             onClick={handleInfoClick}
+                             >
                                 ?
                             </button>
+                            {
+                                mustShowExplanation ? <ShowExplanations stateFunction={setMustShowExplanation}/> : null
+                            }
                         </div>
                     </form>
                 </>

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { CountDownTimer } from "../components/CountDownTimer";
 import { DocumentTitle } from "../components/DocumentTitle";
 import { PopoverCard } from "../components/PopoverCard";
 import { validInputsType } from "./QuestionSheet";
@@ -19,11 +20,14 @@ export type Props = {
 export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questions}: Props) {
     // Acess the endpoint in the server which will give the questions then call the QuestionSheetApplied
 
-    /* const exampleQuestions = [
+    const exampleQuestions = [
         {
             title: 'Esse é o título da primera questão',
-            institute: 'INstituto',
+            institution: 'INstituto',
             year: 2023,
+            topic: 'No one',
+            subject: 'One',
+            imagePath: 'Taking to long',
             alternatives: [
                 'Essa é a primeira alternativa da primera questão Essa é a primeira alternativa da primera questão Essa é a primeira alternativa da primera questão Essa é a primeira alternativa da primera questão Essa é a primeira alternativa da primera questão',
                 'Essa é a segunda alternativa da primera questão',
@@ -34,8 +38,11 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
         },
         {
             title: 'Esse é o título da segunda questão',
-            institute: 'INstituto',
+            institution: 'INstituto',
             year: 2023,
+            topic: 'No one',
+            subject: 'One',
+            imagePath: 'Taking to long',
             alternatives: [
                 'Essa é a primeira alternativa da segunda questão',
                 'Essa é a segunda alternativa da segunda questão',
@@ -46,8 +53,11 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
         },
         {
             title: 'Esse é o título da terceira questão',
-            institute: 'INstituto',
+            institution: 'INstituto',
             year: 2023,
+            topic: 'No one',
+            subject: 'One',
+            imagePath: 'Taking to long',
             alternatives: [
                 'Essa é a primeira alternativa da terceira questão',
                 'Essa é a segunda alternativa da terceira questão',
@@ -56,7 +66,9 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
                 'Essa é a quinta alternativa da terceira questão',
             ]
         },
-    ]; */
+    ];
+
+    questions = exampleQuestions;
 
     const answers = useRef<Array<string>>([]);
     const [questionBeenApplied, setQuestionBeenApplied] = useState(0);
@@ -121,11 +133,11 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
                         >
                             {questionBeenApplied + 1}/{questions.length}
                         </div>
-                        <div
-                        className="bg-LightBlue-500 text-white w-fit rounded-[50%] p-2 text-lg my-auto"
-                        >
-                            cronometro if any
-                        </div>
+                        <CountDownTimer 
+                         time={100/* Number(attributesToBePassedToPopoverCard.filter(el => el.fieldIndex === 4)[0].input) */}
+                         nextQuestionStateFunction={setQuestionBeenApplied}
+                         questionBeenApplied={questionBeenApplied} 
+                        />
                     </div>
                 </div> : null
             }
@@ -136,4 +148,4 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
             }
         </div>
     );
-}; 
+};
