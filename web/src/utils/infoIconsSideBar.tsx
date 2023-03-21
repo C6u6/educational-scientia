@@ -1,6 +1,7 @@
 import { ConfigurationalFunction } from "../components/ConfigurationalForm";
 import { QuestionSheet } from "../pages/QuestionSheet";
 import { QuestionSheetApplied } from "../pages/QuestionSheetApplied";
+import { RichTextEditor } from "../pages/RichTextEditor";
 
 export const sideBarInfoIcons = [
     {
@@ -34,10 +35,16 @@ export const sideBarInfoIcons = [
         element: <></>,
     },
     {
+        name: 'escrever',
+        label: 'Escrever',
+        directory: 'sidebar',
+        element: <RichTextEditor />,
+    },
+    {
         name: 'mensagem',
         label: 'Mensagem',
         directory: 'sidebar',
-        element: <QuestionSheetApplied />,
+        element: <></>,
     },{
         name: 'config',
         label: 'Cofigurações',

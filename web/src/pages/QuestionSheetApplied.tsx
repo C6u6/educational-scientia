@@ -71,15 +71,17 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
     questions = exampleQuestions;
 
     const answers = useRef<Array<string>>([]);
+    const [resetCounter, setResetCounter] = useState(false);
     const [questionBeenApplied, setQuestionBeenApplied] = useState(0);
     // One day, allow this to accept multiple answers
 
     console.log(answers)
-
+    /* console.log('THIS IS RESETcOUNT' + resetCounter) */
     function Answering() {
         setQuestionBeenApplied(question => {
             return question + 1;
         });
+        setResetCounter(() => true);
     };
 
     function addAnswer(alternative: string, questionBeenAnswered: number) {
@@ -89,10 +91,9 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
     return (
         <div className="text-lg">
             {
-                answers.current.length !== questions.length ? 
+                questionBeenApplied + 1 <= questions.length ? 
                 <div className="rounded-lg text-DarkBlue-500 bg-Gray font-light w-fit max-w-[80%] my-5 mx-auto justify-center">
                     <DocumentTitle title={questions[questionBeenApplied].title} />
-                    
                     <h3
                     className="p-5 w-fit mx-auto"
                     >
@@ -134,16 +135,19 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
                             {questionBeenApplied + 1}/{questions.length}
                         </div>
                         <CountDownTimer 
-                         time={100/* Number(attributesToBePassedToPopoverCard.filter(el => el.fieldIndex === 4)[0].input) */}
+                         time={8/* Number(attributesToBePassedToPopoverCard.filter(el => el.fieldIndex === 4)[0].input) */}
+                         resetCounter={resetCounter}
+                         questionsQuantity={questions.length}
+                         questionBeenApplied={questionBeenApplied}
                          nextQuestionStateFunction={setQuestionBeenApplied}
-                         questionBeenApplied={questionBeenApplied} 
                         />
                     </div>
                 </div> : null
             }
             {
-                answers.current.length == questions.length ? 
-                <PopoverCard title="Parabéns" shortPharagraph="You finished n questions" dataToGenerateAnotherQuestionSet={attributesToBePassedToPopoverCard}/>
+                questionBeenApplied + 1 > questions.length /* && questions.length == answers.current.length */ ? 
+                <PopoverCard title={questions.length == answers.current.length ? "Parabéns!": "Belo esforço!"}
+                 shortPharagraph={`Você respondeu a ${answers.current.length} questões`} dataToGenerateAnotherQuestionSet={attributesToBePassedToPopoverCard}/>
                 : null
             }
         </div>

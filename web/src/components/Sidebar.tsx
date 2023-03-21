@@ -47,7 +47,7 @@ export function Sidebar() {
 
             <div className={`${toggle ? 'ml-auto mr-auto w-fit' : ''}`}>
             {!toggle ? <p><small className={`text-Beige ml-[21px]`}>Estudar</small></p> : null}
-                {sideBarInfoIcons.slice(1,5).map((el) => {
+                {sideBarInfoIcons.slice(1,6).map((el) => {
                     return (
                         <Link to={el.name}
                          key={el.name}
@@ -67,7 +67,7 @@ export function Sidebar() {
 
             <div className={`${toggle ? 'ml-auto mr-auto w-fit' : ''}`}>
                 {!toggle ? <p><small className={`text-Beige ml-[21px] `}>Social</small></p> : null}
-                {sideBarInfoIcons.slice(5,6).map((el) => {
+                {sideBarInfoIcons.slice(6,7).map((el) => {
                     return (
                         <Link to={el.name}
                          key={el.name}
@@ -87,7 +87,7 @@ export function Sidebar() {
 
             <div className={`${toggle ? 'ml-auto mr-auto w-fit' : ''}`}>
             {!toggle ? <p><small className={`text-Beige ml-[21px]`}>Informações técnicas</small></p> : null}
-                {sideBarInfoIcons.slice(6).map((el) => {
+                {sideBarInfoIcons.slice(7).map((el) => {
                     return (
                         <Link to={el.name}
                          key={el.name}
