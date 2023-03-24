@@ -14,7 +14,7 @@ export type Props = {
         institution: string,
         alternatives: string[],
     }>,
-    attributesToBePassedToPopoverCard: validInputsType
+    attributesToBePassedToPopoverCard: validInputsType,
 };
 
 export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questions}: Props) {
@@ -71,7 +71,6 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
     questions = exampleQuestions;
 
     const answers = useRef<Array<string>>([]);
-    const [resetCounter, setResetCounter] = useState(false);
     const [questionBeenApplied, setQuestionBeenApplied] = useState(0);
     // One day, allow this to accept multiple answers
 
@@ -81,7 +80,6 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
         setQuestionBeenApplied(question => {
             return question + 1;
         });
-        setResetCounter(() => true);
     };
 
     function addAnswer(alternative: string, questionBeenAnswered: number) {
@@ -136,7 +134,6 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
                         </div>
                         <CountDownTimer 
                          time={8/* Number(attributesToBePassedToPopoverCard.filter(el => el.fieldIndex === 4)[0].input) */}
-                         resetCounter={resetCounter}
                          questionsQuantity={questions.length}
                          questionBeenApplied={questionBeenApplied}
                          nextQuestionStateFunction={setQuestionBeenApplied}

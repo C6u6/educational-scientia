@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
     time: number,
-    resetCounter: boolean, 
     questionsQuantity: number, 
     questionBeenApplied: number,
     nextQuestionStateFunction: React.Dispatch<React.SetStateAction<number>>,
@@ -11,17 +10,18 @@ interface Props {
 export function CountDownTimer(props: Props) {
     const [currentTime, setTime] = useState(props.time);
 
+    const QuestionBeenAppliedNow = props.questionBeenApplied;
+    console.log('The page is at the ' + QuestionBeenAppliedNow + 'th question')
+
     function regressTime(time: number, questionBeenAnswered: number, quantityOfQuestion: number) {
         console.log('segundo: ' + time)
         console.log('questionbeen: ' + questionBeenAnswered)
         if (questionBeenAnswered == quantityOfQuestion) return;
         setTimeout(() => {
-            if (props.resetCounter) {
-                console.log('It was called from counter resetcounter')
-                regressTime(props.time, questionBeenAnswered + 1, quantityOfQuestion);
-            };
+            if (questionBeenAnswered !== QuestionBeenAppliedNow) {
+                return;
+            }
             if (time == 0) {
-                regressTime(props.time, questionBeenAnswered + 1, quantityOfQuestion);
                 props.nextQuestionStateFunction(questionBeenAnswered + 1);
             };
             if (time > 0) {
@@ -33,7 +33,7 @@ export function CountDownTimer(props: Props) {
 
     useEffect(() => {
         regressTime(props.time, props.questionBeenApplied, props.questionsQuantity);
-    }, []);
+    }, [props.questionBeenApplied]);
 
     return (
         <div

@@ -3,7 +3,7 @@ import { BackButton } from "../components/BackButton";
 import { DocumentTitle } from "../components/DocumentTitle";
 import { ShowExplanations } from "../components/ShowExplanations";
 import { api } from "../lib/axios";
-import { QuestionSheetApplied } from "../pages/QuestionSheetApplied";
+import { QuestionSheetApplied } from "./QuestionSheetApplied";
 
 export type validInputsType = Array<{
     input: string,
