@@ -66,16 +66,31 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
                 'Essa é a quinta alternativa da terceira questão',
             ]
         },
+        {
+            title: 'Esse é o título da quarta questão',
+            institution: 'INstituto',
+            year: 2023,
+            topic: 'No one',
+            subject: 'One',
+            imagePath: 'Taking to long',
+            alternatives: [
+                'Essa é a primeira alternativa da quarta questão',
+                'Essa é a segunda alternativa da quarta questão',
+                'Essa é a terceira alternativa da quarta questão',
+                'Essa é a quarta alternativa da quarta questão',
+                'Essa é a quinta alternativa da quarta questão',
+            ]
+        },
     ];
 
     questions = exampleQuestions;
 
     const answers = useRef<Array<string>>([]);
     const [questionBeenApplied, setQuestionBeenApplied] = useState(0);
+    const responderButton = useRef(null);
     // One day, allow this to accept multiple answers
 
     console.log(answers)
-    /* console.log('THIS IS RESETcOUNT' + resetCounter) */
     function Answering() {
         setQuestionBeenApplied(question => {
             return question + 1;
@@ -123,7 +138,7 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
                     <div className="flex justify-around">
                         <button
                         className="bg-LightBlue-500 text-white font-semibold w-[35%] h-8 rounded-lg text-lg my-auto"
-                        onClick={Answering}
+                        onClick={Answering} ref={responderButton}
                         >
                             Responder
                         </button>
@@ -136,6 +151,7 @@ export function QuestionSheetApplied({attributesToBePassedToPopoverCard, questio
                          time={8/* Number(attributesToBePassedToPopoverCard.filter(el => el.fieldIndex === 4)[0].input) */}
                          questionsQuantity={questions.length}
                          questionBeenApplied={questionBeenApplied}
+                         responderButtonRef={responderButton}
                          nextQuestionStateFunction={setQuestionBeenApplied}
                         />
                     </div>
